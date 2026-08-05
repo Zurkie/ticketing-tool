@@ -1,80 +1,42 @@
-import { deleteTicket } from "../api/ticketApi";
+import TicketRow from "./TicketRow";
 
-
-function TicketTable({tickets}) {
-
-
-    const handleDelete = (id) => {
-
-        deleteTicket(id)
-            .then(() => {
-                window.location.reload();
-            });
-
-    };
-
+function TicketTable({
+    tickets,
+    selectedTickets,
+    setSelectedTickets,
+    refreshTickets
+    }) {
 
     return (
-
         <table>
-
             <thead>
             <tr>
+                <th></th>
+                <th></th>
                 <th>ID</th>
                 <th>Title</th>
                 <th>Description</th>
                 <th>Status</th>
+                <th>Priority</th>
+                <th>Created</th>
+                <th>Updated</th>
             </tr>
             </thead>
-
-
             <tbody>
-
             {
                 tickets.map(ticket => (
-
-                    <tr key={ticket.id}>
-
-                        <td>
-                            {ticket.id}
-                        </td>
-
-
-                        <td>
-                            {ticket.title}
-                        </td>
-
-                        <td>
-                            {ticket.description}
-                        </td>
-
-                        <td>
-                            {ticket.status}
-                        </td>
-
-
-                        <td>
-
-                            <button
-                                onClick={() => handleDelete(ticket.id)}
-                            >
-                                Delete
-                            </button>
-
-                        </td>
-
-                    </tr>
-
+                    <TicketRow
+                        key={ticket.id}
+                        ticket={ticket}
+                        selectedTickets={selectedTickets}
+                        setSelectedTickets={setSelectedTickets}
+                        refreshTickets={refreshTickets}
+                    />
                 ))
             }
-
             </tbody>
-
         </table>
-
     );
-
 }
-
 
 export default TicketTable;

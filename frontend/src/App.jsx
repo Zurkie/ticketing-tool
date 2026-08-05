@@ -1,37 +1,32 @@
-import { useEffect, useState } from "react";
-import { getTickets } from "./api/ticketApi";
-import TicketTable from "./components/TicketTable";
-import TicketForm from "./components/TicketForm";
+import {
+    BrowserRouter,
+    Routes,
+    Route
+} from "react-router-dom";
+
+import TicketOverview from "./pages/TicketOverview";
+import TicketCreate from "./pages/TicketCreate";
+import TicketDetails from "./pages/TicketDetails.jsx";
 
 function App() {
 
-    const [tickets, setTickets] = useState([]);
-
-    const loadTickets = () => {
-        getTickets()
-            .then(response => {
-                setTickets(response.data);
-            });
-    };
-
-    useEffect(() => {
-        loadTickets();
-    }, []);
-
     return (
-        <div>
-            <h1>
-                CRIMDAY
-            </h1>
-            <br/>
-            <TicketForm
-                refreshTickets={loadTickets}
-            />
-            <br/>
-            <TicketTable
-                tickets={tickets}
-            />
-        </div>
+        <BrowserRouter>
+            <Routes>
+                <Route
+                    path="/ticket-overview"
+                    element={<TicketOverview />}
+                />
+                <Route
+                    path="/create-ticket"
+                    element={<TicketCreate />}
+                />
+                <Route
+                    path="/tickets/:id"
+                    element={<TicketDetails />}
+                />
+            </Routes>
+        </BrowserRouter>
     );
 }
 

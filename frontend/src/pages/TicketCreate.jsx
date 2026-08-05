@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { createTicket } from "../api/ticketApi";
+import {Link, useNavigate} from "react-router-dom";
 
-function TicketForm({ refreshTickets }) {
+function TicketCreate() {
+    const navigate = useNavigate();
 
     const [ticket, setTicket] = useState({
         title: "",
@@ -10,47 +12,35 @@ function TicketForm({ refreshTickets }) {
         priority: "LOW"
     });
 
-
-    const handleChange = (event) => {
+    const handleChange = (e) => {
         setTicket({
             ...ticket,
-            [event.target.name]: event.target.value
+            [e.target.name]: e.target.value
         });
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
+    const handleSubmit = () => {
         createTicket(ticket)
             .then(() => {
-                setTicket({
-                    title: "",
-                    description: "",
-                    status: "BACKLOG",
-                    priority: "LOW"
-                });
-                refreshTickets();
+                navigate("/ticket-overview");
             });
     };
 
-
     return (
-
-        <form onSubmit={handleSubmit}>
-            <h2>Create Ticket</h2>
+        <div>
+            <h1>Create Ticket</h1>
             <input
                 name="title"
                 placeholder="Title"
                 value={ticket.title}
                 onChange={handleChange}
             />
-
             <textarea
                 name="description"
                 placeholder="Description"
                 value={ticket.description}
                 onChange={handleChange}
             />
-
             <select
                 name="priority"
                 value={ticket.priority}
@@ -69,12 +59,16 @@ function TicketForm({ refreshTickets }) {
                     Low
                 </option>
             </select>
-
-            <button>
-                Create Ticket
+            <button onClick={handleSubmit}>
+                Create
             </button>
-        </form>
+            <Link to="/ticket-overview">
+                <button>
+                    Cancel
+                </button>
+            </Link>
+        </div>
     );
 }
 
-export default TicketForm;
+export default TicketCreate;

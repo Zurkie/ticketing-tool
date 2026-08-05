@@ -40,4 +40,9 @@ public class TicketController {
     public void deleteTicket(@PathVariable Long id) {
         ticketService.deleteTicket(id);
     }
+
+    @DeleteMapping("/tickets")
+    public void deleteTickets(@RequestBody List<Long> ticketIds) {
+        ticketService.deleteSelectedTickets(ticketIds);
+    }
 }
