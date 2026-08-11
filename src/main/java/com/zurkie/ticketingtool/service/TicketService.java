@@ -1,29 +1,33 @@
 package com.zurkie.ticketingtool.service;
 
 import com.zurkie.ticketingtool.model.Subtask;
+import com.zurkie.ticketingtool.model.SubtaskStatus;
 import com.zurkie.ticketingtool.model.Ticket;
-import com.zurkie.ticketingtool.repository.SubtaskRepository;
 import com.zurkie.ticketingtool.repository.TicketRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class TicketService {
 
     private final TicketRepository ticketRepository;
-    private final SubtaskRepository subtaskRepository;
 
-    public TicketService(TicketRepository ticketRepository, SubtaskRepository subtaskRepository) {
+    public TicketService(TicketRepository ticketRepository) {
         this.ticketRepository = ticketRepository;
-        this.subtaskRepository = subtaskRepository;
     }
 
+    @Transactional
     public Ticket createTicket(Ticket ticket) {
 
-        Ticket savedTicket = ticketRepository.save(ticket);
+        if (ticket.getTicketNumber() == null) {
+            ticket.setTicketNumber(generateNextTicketNumber());
+        }
 
-        List<String> defaultSubtasks = List.of(
+        List<String> defaultSubtaskTitles = List.of(
                 "Create/Attach BRS",
                 "Assignment & Estimation",
                 "Approve for Development",
@@ -34,31 +38,43 @@ public class TicketService {
                 "Delivery to PROD"
         );
 
-        List<Subtask> subtasks = defaultSubtasks.stream()
-                .map(title -> {
-                    Subtask subtask = new Subtask();
-                    subtask.setTitle(title);
-                    subtask.setStatus("BACKLOG");
-                    subtask.setTicket(savedTicket);
-                    return subtask;
-                })
-                .toList();
+        for (String title : defaultSubtaskTitles) {
+            Subtask subtask = new Subtask();
+            subtask.setTitle(title);
 
-        subtaskRepository.saveAll(subtasks);
+            ticket.addSubtask(subtask);
+        }
 
-        return savedTicket;
+        System.out.println(ticket.getPriority());
+
+        return ticketRepository.save(ticket);
     }
 
-    public Ticket readTicket(Long id) {
+    private String generateNextTicketNumber() {
+        Optional<Ticket> lastTicket = ticketRepository
+                .findFirstByTicketNumberStartingWithOrderByTicketNumberDesc("CRIM-");
+
+        if (lastTicket.isEmpty()){
+            return "CRIM-0001";
+        }
+
+        String lastTicketNumber = lastTicket.get().getTicketNumber();
+        String numericPart = lastTicketNumber.replace("CRIM-", "");
+        int nextNumber = Integer.parseInt(numericPart) + 1;
+
+        return String.format("CRIM-%04d", nextNumber);
+    }
+
+    public Ticket readTicket(UUID id) {
         return ticketRepository.findById(id)
                 .orElse(null);
     }
 
     public List<Ticket> readTickets() {
-        return ticketRepository.findAllByOrderByIdAsc();
+        return ticketRepository.findAllByOrderByCreatedAtAsc();
     }
 
-    public Ticket updateTicket(Long id, Ticket updatedTicket) {
+    public Ticket updateTicket(UUID id, Ticket updatedTicket) {
 
         Ticket existingTicket = ticketRepository.findById(id)
                 .orElse(null);
@@ -70,16 +86,16 @@ public class TicketService {
         existingTicket.setTitle(updatedTicket.getTitle());
         existingTicket.setDescription(updatedTicket.getDescription());
         existingTicket.setStatus(updatedTicket.getStatus());
-        existingTicket.setStatus(updatedTicket.getPriority());
+        existingTicket.setPriority(updatedTicket.getPriority());
 
         return ticketRepository.save(existingTicket);
     }
 
-    public void deleteTicket(Long id) {
+    public void deleteTicket(UUID id) {
         ticketRepository.deleteById(id);
     }
 
-    public void deleteSelectedTickets(List <Long> ticketIds) {
+    public void deleteSelectedTickets(List <UUID> ticketIds) {
         ticketRepository.deleteAllByIdInBatch(ticketIds);
     }
 }

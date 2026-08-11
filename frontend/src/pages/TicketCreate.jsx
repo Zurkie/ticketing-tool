@@ -8,7 +8,6 @@ function TicketCreate() {
     const [ticket, setTicket] = useState({
         title: "",
         description: "",
-        status: "BACKLOG",
         priority: "LOW"
     });
 

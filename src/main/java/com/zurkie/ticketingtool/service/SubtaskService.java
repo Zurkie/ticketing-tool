@@ -4,6 +4,8 @@ import com.zurkie.ticketingtool.model.Subtask;
 import com.zurkie.ticketingtool.repository.SubtaskRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class SubtaskService {
 
@@ -13,12 +15,12 @@ public class SubtaskService {
         this.subtaskRepository = subtaskRepository;
     }
 
-    public Subtask readSubtask(Long id) {
+    public Subtask readSubtask(UUID id) {
         return subtaskRepository.findById(id)
                 .orElse(null);
     }
 
-    public Subtask updateSubtask(Long id, Subtask updatedSubtask) {
+    public Subtask updateSubtask(UUID id, Subtask updatedSubtask) {
 
         Subtask existingSubtask = subtaskRepository.findById(id)
                 .orElse(null);

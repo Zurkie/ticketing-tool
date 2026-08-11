@@ -5,6 +5,7 @@ import com.zurkie.ticketingtool.service.TicketService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
@@ -18,11 +19,12 @@ public class TicketController {
 
     @PostMapping("/tickets")
     public Ticket createTicket(@RequestBody Ticket ticket){
+        System.out.println(ticket.getPriority());
         return ticketService.createTicket(ticket);
     }
 
     @GetMapping("/tickets/{id}")
-    public Ticket readTicket(@PathVariable Long id){
+    public Ticket readTicket(@PathVariable UUID id){
         return ticketService.readTicket(id);
     }
 
@@ -32,17 +34,17 @@ public class TicketController {
     }
 
     @PutMapping("/tickets/{id}")
-    public Ticket updateTicket(@PathVariable Long id, @RequestBody Ticket ticket){
+    public Ticket updateTicket(@PathVariable UUID id, @RequestBody Ticket ticket){
         return ticketService.updateTicket(id, ticket);
     }
 
     @DeleteMapping("/tickets/{id}")
-    public void deleteTicket(@PathVariable Long id) {
+    public void deleteTicket(@PathVariable UUID id) {
         ticketService.deleteTicket(id);
     }
 
     @DeleteMapping("/tickets")
-    public void deleteTickets(@RequestBody List<Long> ticketIds) {
+    public void deleteTickets(@RequestBody List<UUID> ticketIds) {
         ticketService.deleteSelectedTickets(ticketIds);
     }
 }

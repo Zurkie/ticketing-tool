@@ -9,6 +9,7 @@ import com.zurkie.ticketingtool.service.TicketService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/tickets")
@@ -27,19 +28,17 @@ public class SubtaskController {
     }
 
     @GetMapping("/subtasks/{id}")
-    public Subtask readSubtask(@PathVariable Long id){
+    public Subtask readSubtask(@PathVariable UUID id){
         return subtaskService.readSubtask(id);
     }
 
     @GetMapping("/{ticketId}/subtasks")
-    public List<Subtask> getSubtasksByTicket(@PathVariable Long ticketId) {
-
-        //return subtaskRepository.findByTicketId(ticketId);
+    public List<Subtask> getSubtasksByTicket(@PathVariable UUID ticketId) {
         return subtaskRepository.findByTicketIdOrderByIdAsc(ticketId);
     }
 
     @PostMapping("/{ticketId}/subtasks")
-    public Subtask createSubtask(@PathVariable Long ticketId, @RequestBody Subtask subtask) {
+    public Subtask createSubtask(@PathVariable UUID ticketId, @RequestBody Subtask subtask) {
         Ticket ticket = ticketRepository
                 .findById(ticketId)
                 .orElseThrow(() -> new RuntimeException("Ticket not found"));
@@ -50,7 +49,7 @@ public class SubtaskController {
     }
 
     @PutMapping("/subtasks/{id}")
-    public Subtask updateSubtask(@PathVariable Long id, @RequestBody Subtask subtask) {
+    public Subtask updateSubtask(@PathVariable UUID id, @RequestBody Subtask subtask) {
         System.out.println("Updating subtask: " + id);
         System.out.println("Title: " + subtask.getTitle());
         System.out.println("Status: " + subtask.getStatus());

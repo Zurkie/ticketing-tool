@@ -20,6 +20,8 @@ function TicketTable({
                 <th>Priority</th>
                 <th>Created</th>
                 <th>Updated</th>
+                <th>Created By</th>
+                <th>Updated By</th>
             </tr>
             </thead>
             <tbody>

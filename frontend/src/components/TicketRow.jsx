@@ -90,7 +90,7 @@ function TicketRow({
                     <Link
                         to={`/tickets/${ticket.id}`}
                     >
-                        {ticket.id}
+                        {ticket.ticketNumber}
                     </Link>
                 </td>
                 <td>
@@ -184,6 +184,12 @@ function TicketRow({
                 <td>
                     {new Date(ticket.updatedAt)
                         .toLocaleString()}
+                </td>
+                <td>
+                    {ticket.createdBy}
+                </td>
+                <td>
+                    {ticket.updatedBy}
                 </td>
             </tr>
             {

@@ -2,50 +2,70 @@ package com.zurkie.ticketingtool.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
+@Table(name = "tickets")
+@EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
+@NoArgsConstructor
 public class Ticket {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id", nullable = false, updatable = false)
+    private UUID id;
 
+    @Column(name = "ticket_number", nullable = false, unique = true, updatable = false)
+    private String ticketNumber;
+
+    @Column(name = "title", nullable = false)
     private String title;
 
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private TicketStatus status = TicketStatus.BACKLOG;
 
-    private String priority;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "priority", nullable = false)
+    private TicketPriority priority;
 
-    private LocalDateTime createdAt;
+    @CreatedDate
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private Instant createdAt;
 
-    private LocalDateTime updatedAt;
+    @LastModifiedDate
+    @Column(name = "updated_at", nullable = false)
+    private Instant updatedAt;
 
-    public Ticket() {
-    }
+    @CreatedBy
+    @Column(name = "created_by", nullable = false, updatable = false)
+    private String createdBy;
 
-    @PrePersist
-    public void prePersist() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
-    }
+    @LastModifiedBy
+    @Column(name = "updated_by", nullable = false)
+    private String updatedBy;
 
-    @PreUpdate
-    public void preUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
-
-    @OneToMany(
-            mappedBy = "ticket",
-            cascade = CascadeType.ALL
-    )
+    @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Subtask> subtasks = new ArrayList<>();
+
+    public void addSubtask(Subtask subtask) {
+        subtasks.add(subtask);
+        subtask.setTicket(this);
+    }
 }
