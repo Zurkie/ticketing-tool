@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { getTickets, getTicket } from "../api/ticketApi";
+import { getTickets, getTicket } from "../api/TicketApi.js";
 
 
 function TicketDetails() {

@@ -1,57 +1,24 @@
-import { useEffect, useState } from "react";
-import { deleteTickets, getTickets } from "../api/ticketApi";
-import TicketTable from "../components/TicketTable";
-import { Link } from "react-router-dom";
+import TicketTable from "../components/TicketTable.jsx";
+import {Link} from "react-router-dom";
 
 function TicketOverview() {
 
-    const [tickets, setTickets] = useState([]);
-
-    const [selectedTickets, setSelectedTickets] = useState([]);
-
-    const loadTickets = () => {
-        getTickets()
-            .then(response => {
-                setTickets(response.data);
-            });
-    };
-
-    const handleDeleteSelected = () => {
-        deleteTickets(selectedTickets)
-            .then(() => {
-                loadTickets();
-                setSelectedTickets([]);
-            });
-    };
-
-    useEffect(() => {
-        loadTickets();
-    }, []);
-
     return (
-        <div>
-            <h1>
-                CRIMDAY
-            </h1>
-            <br/>
-            <TicketTable
-                tickets={tickets}
-                selectedTickets={selectedTickets}
-                setSelectedTickets={setSelectedTickets}
-                refreshTickets={loadTickets}
-            />
-            <button
-                onClick={handleDeleteSelected}
-                disabled={selectedTickets.length === 0}
-            >
-                Delete
-            </button>
-            <br/>
-            <Link to="/create-ticket">
-                <button>
-                    Create Ticket
-                </button>
-            </Link>
+        <div className={'min-h-screen bg-kaiju-cream'}>
+            <header>
+                <h1 className="relative w-full bg-kaiju-green text-3xl text-kaiju-orange font-bold p-4 flex justify-center items-center">
+                    CRIMDAY
+
+                    <Link
+                        to="/create-ticket"
+                        className="absolute right-6 rounded-md bg-kaiju-orange px-3 py-1.5 text-sm font-semibold text-white transition hover:brightness-110 cursor-pointer"
+                    >
+                        New CRIM
+                    </Link>
+                </h1>
+            </header>
+
+            <TicketTable />
         </div>
     );
 }

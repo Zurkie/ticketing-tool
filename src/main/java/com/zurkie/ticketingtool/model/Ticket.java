@@ -61,11 +61,25 @@ public class Ticket {
     @Column(name = "updated_by", nullable = false)
     private String updatedBy;
 
+    //@Column(name = "dependency")
+    //private List<Ticket> dependency = new ArrayList<>();
+
+    // List of users who track changes to a ticket.
+    // Future feature: notifications
+    //@Column(name = "watchlist")
+    //private List<User> watchlist = new ArrayList<>();
+
     @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Subtask> subtasks = new ArrayList<>();
 
     public void addSubtask(Subtask subtask) {
         subtasks.add(subtask);
         subtask.setTicket(this);
+    }
+
+    public void removeSubtask(Subtask subtask) {
+        if (subtasks.remove(subtask)) {
+            subtask.setTicket(null);
+        }
     }
 }

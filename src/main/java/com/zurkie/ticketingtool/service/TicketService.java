@@ -1,7 +1,6 @@
 package com.zurkie.ticketingtool.service;
 
 import com.zurkie.ticketingtool.model.Subtask;
-import com.zurkie.ticketingtool.model.SubtaskStatus;
 import com.zurkie.ticketingtool.model.Ticket;
 import com.zurkie.ticketingtool.repository.TicketRepository;
 import jakarta.transaction.Transactional;
@@ -23,9 +22,10 @@ public class TicketService {
     @Transactional
     public Ticket createTicket(Ticket ticket) {
 
-        if (ticket.getTicketNumber() == null) {
-            ticket.setTicketNumber(generateNextTicketNumber());
+        if (ticket.getTicketNumber() != null) {
+            throw new IllegalArgumentException("New ticket cannot have a pre-assigned ticket number");
         }
+        ticket.setTicketNumber(generateNextTicketNumber());
 
         List<String> defaultSubtaskTitles = List.of(
                 "Create/Attach BRS",
@@ -44,8 +44,6 @@ public class TicketService {
 
             ticket.addSubtask(subtask);
         }
-
-        System.out.println(ticket.getPriority());
 
         return ticketRepository.save(ticket);
     }
