@@ -1,26 +1,24 @@
 import TicketTable from "../components/TicketTable.jsx";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function TicketOverview() {
+  return (
+    <div className={"bg-kaiju-cream min-h-screen"}>
+      <header>
+        <h1 className="bg-kaiju-green text-kaiju-orange relative flex w-full items-center justify-center p-4 text-3xl font-bold">
+          CRIMDAY
+          <Link
+            to="/create-ticket"
+            className="bg-kaiju-orange absolute right-6 cursor-pointer rounded-md px-3 py-1.5 text-sm font-semibold text-white transition hover:brightness-110"
+          >
+            New CRIM
+          </Link>
+        </h1>
+      </header>
 
-    return (
-        <div className={'min-h-screen bg-kaiju-cream'}>
-            <header>
-                <h1 className="relative w-full bg-kaiju-green text-3xl text-kaiju-orange font-bold p-4 flex justify-center items-center">
-                    CRIMDAY
-
-                    <Link
-                        to="/create-ticket"
-                        className="absolute right-6 rounded-md bg-kaiju-orange px-3 py-1.5 text-sm font-semibold text-white transition hover:brightness-110 cursor-pointer"
-                    >
-                        New CRIM
-                    </Link>
-                </h1>
-            </header>
-
-            <TicketTable />
-        </div>
-    );
+      <TicketTable />
+    </div>
+  );
 }
 
 export default TicketOverview;

@@ -1,19 +1,15 @@
 import { FiCornerDownRight } from "react-icons/fi";
 
-function SubtaskRow({ subtask }) {
-    return (
-        <tr className="bg-kaiju-cream-dark">
-            <td colSpan="9">
-                <div className="flex border-b-2 border-kaiju-cream items-center gap-6 px-9 py-1 text-left">
-                    <FiCornerDownRight className="text-black" />
+export default function SubtaskRow({ subtask }) {
+  return (
+    <tr className="bg-kaiju-cream-dark">
+      <td colSpan="9">
+        <div className="border-kaiju-cream flex items-center gap-6 border-b-2 px-9 py-1 text-left">
+          <FiCornerDownRight className="text-black" />
 
-                    <span>
-                        {subtask.title}
-                    </span>
-                </div>
-            </td>
-        </tr>
-    );
+          <span>{subtask.title}</span>
+        </div>
+      </td>
+    </tr>
+  );
 }
-
-export default SubtaskRow;
