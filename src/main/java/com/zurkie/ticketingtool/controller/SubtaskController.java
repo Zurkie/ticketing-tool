@@ -48,6 +48,11 @@ public class SubtaskController {
         return subtaskRepository.save(subtask);
     }
 
+    @DeleteMapping("/subtasks/{subtaskId}")
+    public void deleteSubtask(@PathVariable UUID subtaskId){
+        subtaskRepository.deleteById(subtaskId);
+    }
+
     @PutMapping("/subtasks/{id}")
     public Subtask updateSubtask(@PathVariable UUID id, @RequestBody Subtask subtask) {
         System.out.println("Updating subtask: " + id);

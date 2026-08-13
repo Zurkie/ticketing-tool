@@ -57,46 +57,52 @@ const TicketTable = () => {
   };
 
   const headerClass =
-    "border-b-2 border-kaiju-green px-8 py-1 text-center text-kaiju-orange";
+    "border-b-5 border-kaiju-green px-8 py-1 text-center text-amber-500 uppercase bg-kaiju-green";
 
   return (
-    <div className="border-kaiju-green scrollbar-thumb-kaiju-orange scrollbar-track-kaiju-green mx-auto mt-8 w-3/4 scrollbar-thin overflow-x-auto border-b-2">
-      <table className={"mx-auto w-max border-collapse"}>
-        <colgroup>
-          <col className="w-10" />
-          <col className="w-40" />
-          <col className="w-120" />
-          <col className="w-40" />
-          <col className="w-40" />
-          <col className="w-40" />
-          <col className="w-45" />
-          <col className="w-45" />
-          <col className="w-10" />
-        </colgroup>
-        <thead>
-          <tr>
-            <th className={"border-kaiju-green border-b-2"} />
-            <th className={headerClass}>CRIM</th>
-            <th className={headerClass}>Title</th>
-            <th className={headerClass}>Owner</th>
-            <th className={headerClass}>Status</th>
-            <th className={headerClass}>Priority</th>
-            <th className={headerClass}>Date Created</th>
-            <th className={headerClass}>Date Updated</th>
-            <th className={"border-kaiju-green border-b-2"} />
-          </tr>
-        </thead>
-        <tbody>
-          {tickets.map((ticket) => (
-            <TicketTableRow
-              key={ticket.id}
-              ticket={ticket}
-              onTicketDelete={handleTicketDelete}
-              onTicketUpdate={handleTicketUpdate}
-            />
-          ))}
-        </tbody>
-      </table>
+    <div className="mx-auto mt-8 w-3/4 overflow-hidden rounded-lg">
+      <div className="scrollbar-thumb-kaiju-green-light scrollbar-track-kaiju-green overflow-x-auto">
+        <table className="mx-auto w-max border-separate border-spacing-0">
+          <colgroup>
+            <col className="w-10" />
+            <col className="w-40" />
+            <col className="w-120" />
+            <col className="w-40" />
+            <col className="w-10" />
+            <col className="w-40" />
+            <col className="w-40" />
+            <col className="w-45" />
+            <col className="w-45" />
+            <col className="w-10" />
+          </colgroup>
+          <thead>
+            <tr>
+              <th className="border-kaiju-green bg-kaiju-green sticky left-0 z-20 border-b-5" />
+              <th className="border-kaiju-green bg-kaiju-green sticky left-10 z-20 border-b-5 px-8 py-1 text-center text-amber-500 uppercase">
+                CRIM
+              </th>
+              <th className={headerClass}>Title</th>
+              <th className={headerClass}>Owner</th>
+              <th className="border-kaiju-green bg-kaiju-green border-b-5" />
+              <th className={headerClass}>Status</th>
+              <th className={headerClass}>Priority</th>
+              <th className={headerClass}>Date Created</th>
+              <th className={headerClass}>Date Updated</th>
+              <th className="border-kaiju-green bg-kaiju-green border-b-5" />
+            </tr>
+          </thead>
+          <tbody className="bg-kaiju-cream-darker">
+            {tickets.map((ticket) => (
+              <TicketTableRow
+                key={ticket.id}
+                ticket={ticket}
+                onTicketDelete={handleTicketDelete}
+                onTicketUpdate={handleTicketUpdate}
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

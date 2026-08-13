@@ -76,10 +76,4 @@ public class Ticket {
         subtasks.add(subtask);
         subtask.setTicket(this);
     }
-
-    public void removeSubtask(Subtask subtask) {
-        if (subtasks.remove(subtask)) {
-            subtask.setTicket(null);
-        }
-    }
 }

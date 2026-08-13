@@ -32,6 +32,14 @@ export const getSubtasks = (ticketId) => {
   return axios.get(`${API_URL}/${ticketId}/subtasks`);
 };
 
+export const createSubtask = (ticketId, subtaskData) => {
+  return axios.post(`${API_URL}/${ticketId}/subtasks`, subtaskData);
+};
+
+export const deleteSubtask = (subtaskId) => {
+  return axios.delete(`${API_URL}/subtasks/${subtaskId}`);
+};
+
 export const updateSubtask = (subtaskId, updatedSubtask) => {
   console.log("Updating subtask:", subtaskId, updatedSubtask);
 

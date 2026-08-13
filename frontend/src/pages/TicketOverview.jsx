@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function TicketOverview() {
   return (
-    <div className={"bg-kaiju-cream min-h-screen"}>
+    <div className={"min-h-screen bg-gray-500"}>
       <header>
         <h1 className="bg-kaiju-green text-kaiju-orange relative flex w-full items-center justify-center p-4 text-3xl font-bold">
           CRIMDAY
@@ -15,7 +15,6 @@ function TicketOverview() {
           </Link>
         </h1>
       </header>
-
       <TicketTable />
     </div>
   );
